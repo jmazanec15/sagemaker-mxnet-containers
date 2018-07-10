@@ -23,7 +23,7 @@ def create_docker_image(binary_path, processor, framework_version, python_versio
     """
     # Initialize commonly used variables
     py_v = 'py{}'.format(python_version.split('.')[0]) # i.e. py2
-    base_docker_path = '{}/../docker/{}/base/Dockerfile.{}'.format(PATH_TO_SCRIPT, framework_version, processor)
+    base_docker_path = '{}/../docker/{}/base'.format(PATH_TO_SCRIPT, framework_version, processor)
     if framework_version == '1.0.0' or framework_version == '0.12.1':
         final_docker_path = '{}/../docker/{}/final/{}'.format(PATH_TO_SCRIPT, framework_version, py_v)
     else:
@@ -42,7 +42,7 @@ def create_docker_image(binary_path, processor, framework_version, python_versio
     if framework_version == '1.0.0' or framework_version == '0.12.1':
         print('Building base image...')
         image_name = 'mxnet-base:{}-{}-{}'.format(framework_version, processor,  py_v)
-        subprocess.call([DOCKER, 'build', '-t', image_name, '-f', base_docker_path, '.'])
+        subprocess.call([DOCKER, 'build', '-t', image_name, '-f', 'Dockerfile.{}'.format(processor), '.'], cwd=base_docker_path)
 
     #  Build final image
     print('Building final image...')
